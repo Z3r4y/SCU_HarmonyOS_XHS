@@ -1,4 +1,5 @@
 import router from '@ohos.router';
+import LoginUtil from '../utils/LoginUtil'
 
 
 @Entry
@@ -7,15 +8,7 @@ import router from '@ohos.router';
 struct SideBarContainerTest {
 
   aboutToAppear() {
-    this.checkLoginStatus();
-  }
-
-  async checkLoginStatus() {
-    const token = AppStorage.get<string>("token");
-    if (!token) {
-      // 用户未登录，跳转到登录页面
-      router.pushUrl({ url: 'pages/Login' });
-    }
+    LoginUtil.checkLoginStatus();
   }
 
   @State currentIndex: number = 0
