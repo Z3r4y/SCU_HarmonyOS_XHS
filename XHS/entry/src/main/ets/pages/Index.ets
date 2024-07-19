@@ -2,6 +2,8 @@ import router from '@ohos.router'
 import LoginUtil from '../utils/LoginUtil'
 import UserProfilePage from './UserProfilePage'
 import PostListPage from './PostListPage'
+import FocusListPage from './FocusListPage'
+import AroundListPage from './AroundListPage'
 
 @Entry
 @Component
@@ -46,7 +48,7 @@ struct SideBarContainerTest {
             .color('#EE6363')
             .opacity(this.currentIndex === index ? 1 : 0)
         }else
-        if(name=='我的') {
+        if(name=='附近') {
           Text(name)
             .fontColor(this.currentIndex === index ? this.selectedFontColor : this.fontColor)
             .fontSize(20)
@@ -90,7 +92,7 @@ struct SideBarContainerTest {
         Column() {
           Tabs({ barPosition: BarPosition.Start }) {
             TabContent() {
-              Text('关注的内容').fontSize(30).fontColor('#000')
+              FocusListPage()
 
             }
             .tabBar(this.tabBuilder(0, '关注'))
@@ -101,12 +103,12 @@ struct SideBarContainerTest {
             .tabBar(this.tabBuilder(1, '发现'))
 
             TabContent() {
-              Text('我').fontSize(30).fontColor('#000')
+              AroundListPage()
             }
-            .tabBar(this.tabBuilder(2, '我的'))
+            .tabBar(this.tabBuilder(2, '附近'))
           }
           .animationDuration(0)
-          .backgroundColor('#FFFAFA')//主页面（关注的内容）颜色
+          .backgroundColor('#FFFAFA')
           .onChange((index: number) => {
             this.currentIndex = index
           })

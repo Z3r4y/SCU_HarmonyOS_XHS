@@ -20,3 +20,7 @@ export const captcha  = ():Promise<http.HttpResponse> =>get("/api/captcha")
 export const profile = (token: string): Promise<http.HttpResponse> => get(`/user/profile?token=${token}`);
 
 export const posts  = ():Promise<http.HttpResponse> =>get("/api/posts")
+
+export const focus  = ():Promise<http.HttpResponse> =>get("/api/focus")
+
+export const around  = ():Promise<http.HttpResponse> =>get("/api/around")

@@ -1,29 +1,29 @@
-import { posts } from '../api/API';
-import PostModel from '../model/PostModel';
+import { focus } from '../api/API';
+import FocusModel from '../model/FocusModel';
 import ResponseData from '../model/ResponseData'
 
 @Component
-struct PostListPage {
-  @State posts: PostModel[] = [];
+struct FocusListPage {
+  @State posts: FocusModel[] = [];
 
   aboutToAppear() {
     this.loadPosts();
   }
 
   async loadPosts() {
-      const response = await posts();
-      if (response.responseCode == 200) {
-        const responseData: ResponseData<PostModel[]> = JSON.parse(response.result as string);
-        if (responseData.code == 0 && responseData.data !== undefined) {
-          this.posts = responseData.data;
-        }
+    const response = await focus();
+    if (response.responseCode == 200) {
+      const responseData: ResponseData<FocusModel[]> = JSON.parse(response.result as string);
+      if (responseData.code == 0 && responseData.data !== undefined) {
+        this.posts = responseData.data;
       }
     }
+  }
 
   build() {
     Scroll() {
       Column({ space: 10 }) {
-        ForEach(this.posts, (item:PostModel, index) => {
+        ForEach(this.posts, (item:FocusModel, index) => {
           PostItem({
             title: item.title,
             author: item.author,
@@ -71,4 +71,4 @@ struct PostItem {
     }
   }
 }
-export default PostListPage;
+export default FocusListPage;
