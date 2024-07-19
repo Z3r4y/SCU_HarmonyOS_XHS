@@ -3,7 +3,6 @@ import {profile} from '../api/API'
 import UserModel from '../model/UserModel'
 import ResponseData from '../model/ResponseData'
 
-@Entry
 @Component
 struct UserProfilePage {
   @State userName: string = '';

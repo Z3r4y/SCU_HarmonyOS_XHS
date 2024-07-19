@@ -7,6 +7,7 @@ DROP TABLE IF EXISTS suggestions;
 DROP TABLE IF EXISTS hottopics;
 DROP TABLE IF EXISTS items;
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS posts;
 
 -- 创建 history 表
 CREATE TABLE IF NOT EXISTS history (
@@ -91,3 +92,40 @@ CREATE TABLE IF NOT EXISTS users (
 INSERT INTO users (username, user_number, description, following, followers, likes, userphone, password, token) VALUES
 ('Z3r4y', '26346998143', '很酷的黑客', 2, 1, 0, '13851069604', '123456', 'dG9rZW4tMQ=='),
 ('admin', '26346998144', '管理员账号', 0, 0, 0, '15950231992', 'admin', 'dG9rZW4tMg==');
+
+
+-- 创建 posts 表
+CREATE TABLE IF NOT EXISTS posts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    author VARCHAR(255) NOT NULL,
+    image_url VARCHAR(255) NOT NULL
+);
+
+
+-- 插入数据到 posts 表
+INSERT INTO posts (title, author, image_url) VALUES
+('上了川大才知道，出去看世界如此简单', '小红书用户', 'http://124.222.136.33:1338/image/img1.jpg'),
+('Windows为什么有两个命令行', '技术宅', 'http://124.222.136.33:1338/image/img2.jpg'),
+('当狸花猫遇到橘猫', '猫奴小二', 'http://124.222.136.33:1338/image/img3.jpg'),
+('江安河边有多美', '摄影师阿良', 'http://124.222.136.33:1338/image/img4.jpg'),
+('成都已经进化到这种程度了吗。。。', '干饭人Yuki', 'http://124.222.136.33:1338/image/img5.jpg'),
+('虎扑》男生发型锐评点赞加关注', '飞阳-济南男士发型师', 'http://124.222.136.33:1338/image/img6.jpg'),
+('什么时候我看见计算机这些梗图才能不笑', '西元前', 'http://124.222.136.33:1338/image/img7.jpg'),
+('最后几个小时了再看看椅子', '雷军', 'http://124.222.136.33:1338/image/img8.jpg'),
+('结婚前vs结婚后的区别', '废柴士豆丝', 'http://124.222.136.33:1338/image/img9.jpg'),
+('女生不好意思说但想让男朋友知道的事', '小可爱', 'http://124.222.136.33:1338/image/img10.jpg'),
+('来摸小宠物', '喝点牛奶', 'http://124.222.136.33:1338/image/img11.jpg'),
+('SCU/想知道宿舍的同学在干嘛', 'Kendo', 'http://124.222.136.33:1338/image/img12.jpg'),
+('宝宝，你是一辆情绪稳定的拖车小猫', 'lucky酱', 'http://124.222.136.33:1338/image/img13.jpg'),
+('情侣升温满满爱', 'T飞飞', 'http://124.222.136.33:1338/image/img14.jpg'),
+('出发巴黎！二十天出差我的行李都装了什么', '王冰冰', 'http://124.222.136.33:1338/image/img15.jpg'),
+('情侣互动升温游戏-情侣随机转盘', 'T飞飞', 'http://124.222.136.33:1338/image/img16.jpg'),
+('小猪猪今日分享', '万岁今日挨打', 'http://124.222.136.33:1338/image/img17.jpg'),
+('草 这就是我这辈子该做的事', '李乐一哈', 'http://124.222.136.33:1338/image/img18.jpg'),
+('川大 | 我补药一身班味啊', '娜小A', 'http://124.222.136.33:1338/image/img19.jpg'),
+('天秤座', '小小天秤座', 'http://124.222.136.33:1338/image/img20.jpg'),
+('No.49 哄对象睡觉的睡前故事', 'Kendo', 'http://124.222.136.33:1338/image/img21.jpg'),
+('全国高校保研率排行！川大排多少？', '大红门情报站', 'http://124.222.136.33:1338/image/img22.jpg'),
+('little bunny', 'fal', 'http://124.222.136.33:1338/image/img23.jpg'),
+('我最爱我女朋友辣', '粉粉小狗', 'http://124.222.136.33:1338/image/img24.jpg');

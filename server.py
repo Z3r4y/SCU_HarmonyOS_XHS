@@ -91,6 +91,18 @@ class ItemModel(db.Model):
     def __init__(self, item):
         self.item = item
 
+class PostModel(db.Model):
+    __tablename__ = 'posts'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(255))
+    author = db.Column(db.String(255))
+    image_url = db.Column(db.String(255))
+
+    def __init__(self, title, author, image_url):
+        self.title = title
+        self.author = author
+        self.image_url = image_url
+
 
 def generate_captcha():
     # 创建一个白色背景的图像
@@ -261,6 +273,13 @@ def get_items():
     items_data = [{'id': item.id, 'item': item.item} for item in items]
 
     response_data = ResponseData(code=0, msg='Success', data=items_data)
+    return jsonify(response_data.__dict__)
+
+@app.route('/api/posts', methods=['GET'])
+def get_posts():
+    posts = PostModel.query.all()
+    post_list = [{'title': post.title, 'author': post.author, 'imageUrl': post.image_url} for post in posts]
+    response_data = ResponseData(code=0, msg='Success', data=post_list)
     return jsonify(response_data.__dict__)
 
 if __name__ == '__main__':

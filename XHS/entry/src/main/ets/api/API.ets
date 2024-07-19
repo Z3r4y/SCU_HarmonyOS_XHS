@@ -18,3 +18,5 @@ export const items  = ():Promise<http.HttpResponse> =>get("/content/items")
 export const captcha  = ():Promise<http.HttpResponse> =>get("/api/captcha")
 
 export const profile = (token: string): Promise<http.HttpResponse> => get(`/user/profile?token=${token}`);
+
+export const posts  = ():Promise<http.HttpResponse> =>get("/api/posts")

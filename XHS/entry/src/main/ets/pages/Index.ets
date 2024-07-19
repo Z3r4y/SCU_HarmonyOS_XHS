@@ -1,7 +1,7 @@
-import router from '@ohos.router';
+import router from '@ohos.router'
 import LoginUtil from '../utils/LoginUtil'
 import UserProfilePage from './UserProfilePage'
-
+import PostListPage from './PostListPage'
 
 @Entry
 @Component
@@ -96,7 +96,7 @@ struct SideBarContainerTest {
             .tabBar(this.tabBuilder(0, '关注'))
 
             TabContent() {
-              Text('发现的内容').fontSize(30).fontColor('#000')
+              PostListPage()
             }
             .tabBar(this.tabBuilder(1, '发现'))
 
