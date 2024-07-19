@@ -77,12 +77,17 @@ INSERT INTO items (item) VALUES
 CREATE TABLE IF NOT EXISTS users (
     uid INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(80) NOT NULL,
-    password VARCHAR(80) NOT NULL,
+    user_number VARCHAR(20),
+    description VARCHAR(255),
+    following INT DEFAULT 0,
+    followers INT DEFAULT 0,
+    likes INT DEFAULT 0,
     userphone VARCHAR(20) NOT NULL,
+    password VARCHAR(80) NOT NULL,
     token VARCHAR(255)
 );
 
 -- 插入初始数据到 users 表
-INSERT INTO users (username, password, userphone, token) VALUES
-('Z3r4y', '123456', '13851069604', 'token1'),
-('admin', 'admin', '15950231992', 'token2');
+INSERT INTO users (username, user_number, description, following, followers, likes, userphone, password, token) VALUES
+('Z3r4y', '26346998143', '很酷的黑客', 2, 1, 0, '13851069604', '123456', 'dG9rZW4tMQ=='),
+('admin', '26346998144', '管理员账号', 0, 0, 0, '15950231992', 'admin', 'dG9rZW4tMg==');

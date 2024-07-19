@@ -1,5 +1,6 @@
 import router from '@ohos.router';
 import LoginUtil from '../utils/LoginUtil'
+import UserProfilePage from './UserProfilePage'
 
 
 @Entry
@@ -100,7 +101,7 @@ struct SideBarContainerTest {
             .tabBar(this.tabBuilder(1, '发现'))
 
             TabContent() {
-              Text('我的内容').fontSize(30).fontColor('#000')
+              Text('我').fontSize(30).fontColor('#000')
             }
             .tabBar(this.tabBuilder(2, '我的'))
           }
@@ -128,7 +129,7 @@ struct SideBarContainerTest {
       .tabBar(this.tabBuilder1(2, '消息'))
 
       TabContent() {
-        Text('我的内容').fontSize(30).fontColor('#000')
+        UserProfilePage()
       }
       .tabBar(this.tabBuilder1(3, '我'))
     }
