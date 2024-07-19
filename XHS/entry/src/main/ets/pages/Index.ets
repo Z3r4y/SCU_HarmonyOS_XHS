@@ -5,6 +5,19 @@ import router from '@ohos.router';
 @Component
 
 struct SideBarContainerTest {
+
+  aboutToAppear() {
+    this.checkLoginStatus();
+  }
+
+  async checkLoginStatus() {
+    const token = AppStorage.get<string>("token");
+    if (!token) {
+      // 用户未登录，跳转到登录页面
+      router.pushUrl({ url: 'pages/Login' });
+    }
+  }
+
   @State currentIndex: number = 0
   @State currentIndex1: number = 0
   @State fontColor: string = '#000'

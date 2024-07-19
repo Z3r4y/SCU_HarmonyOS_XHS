@@ -6,6 +6,7 @@ DROP TABLE IF EXISTS history;
 DROP TABLE IF EXISTS suggestions;
 DROP TABLE IF EXISTS hottopics;
 DROP TABLE IF EXISTS items;
+DROP TABLE IF EXISTS users;
 
 -- 创建 history 表
 CREATE TABLE IF NOT EXISTS history (
@@ -71,3 +72,17 @@ INSERT INTO items (item) VALUES
 ('情侣见面小花束'),
 ('茉莉花的花语'),
 ('川大网安');
+
+-- 创建 users 表
+CREATE TABLE IF NOT EXISTS users (
+    uid INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(80) NOT NULL,
+    password VARCHAR(80) NOT NULL,
+    userphone VARCHAR(20) NOT NULL,
+    token VARCHAR(255)
+);
+
+-- 插入初始数据到 users 表
+INSERT INTO users (username, password, userphone, token) VALUES
+('Z3r4y', '123456', '13851069604', 'token1'),
+('admin', 'admin', '15950231992', 'token2');

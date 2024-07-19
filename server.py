@@ -1,6 +1,10 @@
-from flask import Flask, request, jsonify
+from flask import Flask, jsonify, request, send_file, make_response
 from flask_sqlalchemy import SQLAlchemy
 import pymysql
+from PIL import Image, ImageDraw, ImageFont
+import random
+import io
+import base64
 
 # 使用PyMySQL代替MySQLdb
 pymysql.install_as_MySQLdb()
@@ -12,11 +16,13 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:my-secret-pw@124.2
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
+
 class ResponseData:
     def __init__(self, code=None, msg=None, data=None):
         self.code = code
         self.msg = msg
         self.data = data
+
 
 class UserModel(db.Model):
     __tablename__ = 'users'
@@ -24,11 +30,14 @@ class UserModel(db.Model):
     username = db.Column(db.String(80))
     password = db.Column(db.String(80))
     userphone = db.Column(db.String(20))
+    token = db.Column(db.String(255), nullable=True)
 
-    def __init__(self, username, password, userphone):
+    def __init__(self, username, password, userphone, token=None):
         self.username = username
         self.password = password
         self.userphone = userphone
+        self.token = token
+
 
 class HistoryModel(db.Model):
     __tablename__ = 'history'
@@ -38,6 +47,7 @@ class HistoryModel(db.Model):
     def __init__(self, content):
         self.content = content
 
+
 class SuggestionModel(db.Model):
     __tablename__ = 'suggestions'
     id = db.Column(db.Integer, primary_key=True)
@@ -45,6 +55,7 @@ class SuggestionModel(db.Model):
 
     def __init__(self, suggestion):
         self.suggestion = suggestion
+
 
 class HotTopicModel(db.Model):
     __tablename__ = 'hottopics'
@@ -60,6 +71,7 @@ class HotTopicModel(db.Model):
         self.views = views
         self.isHot = isHot
 
+
 class ItemModel(db.Model):
     __tablename__ = 'items'
     id = db.Column(db.Integer, primary_key=True)
@@ -67,6 +79,53 @@ class ItemModel(db.Model):
 
     def __init__(self, item):
         self.item = item
+
+
+def generate_captcha():
+    # 创建一个白色背景的图像
+    image = Image.new('RGB', (150, 60), (255, 255, 255))
+    draw = ImageDraw.Draw(image)
+    font = ImageFont.truetype('arial.ttf', 36)
+
+    # 生成随机的验证码文本
+    captcha_text = ''.join(random.choices('ABCDEFGHJKLMNPQRSTUVWXYZ23456789', k=4))
+
+    # 绘制验证码文本
+    for i, char in enumerate(captcha_text):
+        # 随机颜色
+        color = (random.randint(0, 100), random.randint(0, 100), random.randint(0, 100))
+        # 随机位置
+        position = (10 + i * 30 + random.randint(-5, 5), random.randint(-5, 5))
+        draw.text(position, char, font=font, fill=color)
+
+    # 添加一些干扰线
+    for _ in range(5):
+        start = (random.randint(0, 150), random.randint(0, 60))
+        end = (random.randint(0, 150), random.randint(0, 60))
+        color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+        draw.line([start, end], fill=color, width=2)
+
+    # 添加一些噪点
+    for _ in range(50):
+        position = (random.randint(0, 150), random.randint(0, 60))
+        color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+        draw.point(position, fill=color)
+
+    # 保存图像到内存中
+    buffer = io.BytesIO()
+    image.save(buffer, format='PNG')
+    buffer.seek(0)
+    img_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8')
+
+    return captcha_text, img_base64
+
+
+
+@app.route('/api/captcha', methods=['GET'])
+def get_captcha():
+    captcha_text, img_base64 = generate_captcha()
+    return jsonify({'captcha_text': captcha_text, 'captcha_image': img_base64})
+
 
 @app.route('/user/login', methods=['POST'])
 def user_login():
@@ -77,15 +136,19 @@ def user_login():
     user = UserModel.query.filter_by(userphone=phone_number, password=password).first()
 
     if user:
+        # 生成一个token，这里使用简单的示例，你可以使用更复杂的生成方法
+        token = generate_token(user.uid)
         response_data = ResponseData(code=0, msg='Success', data={
             'uid': user.uid,
             'username': user.username,
-            'userphone': user.userphone
+            'userphone': user.userphone,
+            'token': token
         })
     else:
         response_data = ResponseData(code=1, msg='Invalid phone number or password')
 
     return jsonify(response_data.__dict__)
+
 
 @app.route('/user/reg', methods=['POST'])
 def user_register():
@@ -103,17 +166,26 @@ def user_register():
         response_data = ResponseData(code=409, msg='Phone number already registered')
         return jsonify(response_data.__dict__), 409
 
-    new_user = UserModel(username=username, password=password, userphone=userphone)
+    token = generate_token(userphone)
+    new_user = UserModel(username=username, password=password, userphone=userphone, token=token)
     db.session.add(new_user)
     db.session.commit()
 
     response_data = ResponseData(code=0, msg='Registration successful', data={
         'uid': new_user.uid,
         'username': new_user.username,
-        'userphone': new_user.userphone
+        'userphone': new_user.userphone,
+        'token': token
     })
 
     return jsonify(response_data.__dict__), 200
+
+
+
+def generate_token(uid):
+    # 简单生成token的方法，可以用更安全的方式生成token
+    return base64.b64encode(f'token-{uid}'.encode()).decode()
+
 
 @app.route('/content/history', methods=['GET'])
 def get_history():
@@ -123,6 +195,7 @@ def get_history():
     response_data = ResponseData(code=0, msg='Success', data=history_data)
     return jsonify(response_data.__dict__)
 
+
 @app.route('/content/suggestions', methods=['GET'])
 def get_suggestions():
     suggestions = SuggestionModel.query.all()
@@ -130,6 +203,7 @@ def get_suggestions():
 
     response_data = ResponseData(code=0, msg='Success', data=suggestions_data)
     return jsonify(response_data.__dict__)
+
 
 @app.route('/content/hottopics', methods=['GET'])
 def get_hottopics():
@@ -145,6 +219,7 @@ def get_hottopics():
     response_data = ResponseData(code=0, msg='Success', data=hot_topics_data)
     return jsonify(response_data.__dict__)
 
+
 @app.route('/content/items', methods=['GET'])
 def get_items():
     items = ItemModel.query.all()
@@ -153,7 +228,10 @@ def get_items():
     response_data = ResponseData(code=0, msg='Success', data=items_data)
     return jsonify(response_data.__dict__)
 
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
     app.run(debug=True, host='0.0.0.0', port=1337)
+
+

@@ -14,3 +14,5 @@ export const suggestions = ():Promise<http.HttpResponse> =>get("/content/suggest
 export const hottopics  = ():Promise<http.HttpResponse> =>get("/content/hottopics")
 
 export const items  = ():Promise<http.HttpResponse> =>get("/content/items")
+
+export const captcha  = ():Promise<http.HttpResponse> =>get("/api/captcha")

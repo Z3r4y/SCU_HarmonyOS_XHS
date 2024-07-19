@@ -62,11 +62,14 @@ struct LoginPage {
           router.pushUrl({url:"pages/Login2"})
         })
 
-      // 其他登录方式链接
-      Text('其他登录方式 >')
+
+      Text('前往注册 >')
         .fontSize(14)
         .fontColor('#0000FF')
         .padding({ top: 10 })
+        .onClick(() => {
+          router.pushUrl({url:"pages/Register"})
+        })
 
       // 用户协议复选框和文字
       Row() {
