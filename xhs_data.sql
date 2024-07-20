@@ -10,6 +10,7 @@ DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS posts;
 DROP TABLE IF EXISTS focus;
 DROP TABLE IF EXISTS around;
+DROP TABLE IF EXISTS friends;
 
 -- 创建 history 表
 CREATE TABLE IF NOT EXISTS history (
@@ -180,3 +181,19 @@ INSERT INTO around (title, author, image_url) VALUES
 ('成都双。。。三子塔！', 'ttaipov', 'http://124.222.136.33:1338/image/around/img14.jpg'),
 ('老婆说我拍的不如路人偷拍', 'Mr.Tang', 'http://124.222.136.33:1338/image/around/img15.jpg'),
 ('川大江安炒菜馆合集', '高贵的豌豆', 'http://124.222.136.33:1338/image/around/img16.jpg');
+
+
+-- 创建 friends 表
+CREATE TABLE IF NOT EXISTS friends (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(80) NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    image VARCHAR(255) NOT NULL
+);
+
+-- 插入数据到 friends 表
+INSERT INTO friends (name, description, image) VALUES
+('坡坡啦', '通讯录好友 | 10篇笔记', 'http://124.222.136.33:1338/image/friend/img1.jpg'),
+('犬来八荒', '明星 | 3天前发了笔记', 'http://124.222.136.33:1338/image/friend/img2.jpg'),
+('姜武', '演员 | 3天前发了笔记', 'http://124.222.136.33:1338/image/friend/img3.jpg'),
+('胡可', '演员 | 昨天发了笔记', 'http://124.222.136.33:1338/image/friend/img4.jpg');

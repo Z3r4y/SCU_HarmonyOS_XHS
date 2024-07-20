@@ -128,6 +128,19 @@ class AroundModel(db.Model):
         self.image_url = image_url
 
 
+class FriendModel(db.Model):
+    __tablename__ = 'friends'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80))
+    description = db.Column(db.String(255))
+    image = db.Column(db.String(255))
+
+    def __init__(self, name, description, image):
+        self.name = name
+        self.description = description
+        self.image = image
+
+
 def generate_captcha():
     # 创建一个白色背景的图像
     image = Image.new('RGB', (150, 60), (255, 255, 255))
@@ -318,6 +331,14 @@ def get_around():
     posts = AroundModel.query.all()
     post_list = [{'title': post.title, 'author': post.author, 'imageUrl': post.image_url} for post in posts]
     response_data = ResponseData(code=0, msg='Success', data=post_list)
+    return jsonify(response_data.__dict__)
+
+@app.route('/user/friends', methods=['GET'])
+def get_friends():
+    friends = FriendModel.query.all()
+    friends_data = [{'name': friend.name, 'description': friend.description, 'image': friend.image} for friend in friends]
+
+    response_data = ResponseData(code=0, msg='Success', data=friends_data)
     return jsonify(response_data.__dict__)
 
 if __name__ == '__main__':

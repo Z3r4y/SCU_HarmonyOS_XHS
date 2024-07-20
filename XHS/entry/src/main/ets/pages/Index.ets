@@ -4,6 +4,7 @@ import UserProfilePage from './UserProfilePage'
 import PostListPage from './PostListPage'
 import FocusListPage from './FocusListPage'
 import AroundListPage from './AroundListPage'
+import MessagePage from './MessagePage'
 
 @Entry
 @Component
@@ -120,13 +121,12 @@ struct SideBarContainerTest {
       // 其他TabContent内容：发现、推荐、我的
 
       TabContent() {
-        Text('推荐的内容').fontSize(30).fontColor('#000')
-
+        Image($r('app.media.ctf'))
       }
       .tabBar(this.tabBuilder1(1, '推荐'))
 
       TabContent() {
-        Text('消息的内容').fontSize(30).fontColor('#000')
+        MessagePage()
       }
       .tabBar(this.tabBuilder1(2, '消息'))
 

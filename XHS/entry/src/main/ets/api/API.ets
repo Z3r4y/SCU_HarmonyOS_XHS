@@ -24,3 +24,5 @@ export const posts  = ():Promise<http.HttpResponse> =>get("/api/posts")
 export const focus  = ():Promise<http.HttpResponse> =>get("/api/focus")
 
 export const around  = ():Promise<http.HttpResponse> =>get("/api/around")
+
+export const friends  = ():Promise<http.HttpResponse> =>get("/user/friends")
